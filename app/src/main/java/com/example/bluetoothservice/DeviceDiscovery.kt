@@ -116,7 +116,7 @@ class DeviceDiscovery : AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.discover_device)
         val btnONOFF: Button = findViewById(R.id.btnONOFF) as Button
         btnEnableDisable_Discoverable = findViewById<Button>(R.id.btnDiscoverable_on_off)
         lvNewDevices = findViewById<ListView>(R.id.lvNewDevices)
