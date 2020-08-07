@@ -26,7 +26,7 @@ class DeviceDiscovery : AppCompatActivity()  {
 
 
     // Create a BroadcastReceiver for ACTION_FOUND
-    private val mBroadcastReceiver1: BroadcastReceiver = object : BroadcastReceiver() {
+    private val mBluetootEnableBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             val action = intent.action
             // When discovery finds a device
@@ -87,7 +87,7 @@ class DeviceDiscovery : AppCompatActivity()  {
      * Broadcast Receiver for listing devices that are not yet paired
      * -Executed by btnDiscover() method.
      */
-    private val mBroadcastReceiver3: BroadcastReceiver = object : BroadcastReceiver() {
+    private val mBroadcastReceiverDiscoverList: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             val action = intent.action
             println( "onReceive: ACTION FOUND.")
@@ -109,7 +109,7 @@ class DeviceDiscovery : AppCompatActivity()  {
     override fun onDestroy() {
         println("onDestroy: called.")
         super.onDestroy()
-        unregisterReceiver(mBroadcastReceiver1)
+        unregisterReceiver(mBluetootEnableBroadcastReceiver)
         unregisterReceiver(mBroadcastReceiver2)
         //mBluetoothAdapter.cancelDiscovery();
     }
@@ -138,13 +138,13 @@ class DeviceDiscovery : AppCompatActivity()  {
             val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivity(enableBTIntent)
             val BTIntent = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-            registerReceiver(mBroadcastReceiver1, BTIntent)
+            registerReceiver(mBluetootEnableBroadcastReceiver, BTIntent)
         }
         if (mBluetoothAdapter!!.isEnabled) {
             println( "enableDisableBT: disabling BT.")
             mBluetoothAdapter!!.disable()
             val BTIntent = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-            registerReceiver(mBroadcastReceiver1, BTIntent)
+            registerReceiver(mBluetootEnableBroadcastReceiver, BTIntent)
         }
     }
 
@@ -170,7 +170,7 @@ class DeviceDiscovery : AppCompatActivity()  {
             checkBTPermissions()
             mBluetoothAdapter!!.startDiscovery()
             val discoverDevicesIntent = IntentFilter(BluetoothDevice.ACTION_FOUND)
-            registerReceiver(mBroadcastReceiver3, discoverDevicesIntent)
+            registerReceiver(mBroadcastReceiverDiscoverList, discoverDevicesIntent)
         }
         if (!mBluetoothAdapter!!.isDiscovering) {
 
@@ -178,7 +178,7 @@ class DeviceDiscovery : AppCompatActivity()  {
             checkBTPermissions()
             mBluetoothAdapter!!.startDiscovery()
             val discoverDevicesIntent = IntentFilter(BluetoothDevice.ACTION_FOUND)
-            registerReceiver(mBroadcastReceiver3, discoverDevicesIntent)
+            registerReceiver(mBroadcastReceiverDiscoverList, discoverDevicesIntent)
         }
     }
 
