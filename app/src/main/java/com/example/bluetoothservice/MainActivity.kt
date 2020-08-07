@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mBluetoothAdapter: BluetoothAdapter
+    var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
 
     // Create a BroadcastReceiver for ACTION_FOUND
     private val mBluetootEnableBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val btnONOFF: Button = findViewById<Button>(R.id.btnONOFF)
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        //bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         btnONOFF.setOnClickListener {
             println( "onClick: enabling/disabling bluetooth.")
             enableDisableBT()
@@ -43,16 +43,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun enableDisableBT() {
-        if (!mBluetoothAdapter.isEnabled) {
+        if (!bluetoothAdapter?.isEnabled!!) {
             println( "enableDisableBT: enabling BT.")
             val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivity(enableBTIntent)
             val BtIntent = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
             registerReceiver(mBluetootEnableBroadcastReceiver, BtIntent)
         }
-        if (mBluetoothAdapter.isEnabled) {
+        if (bluetoothAdapter?.isEnabled!!) {
             println( "enableDisableBT: disabling BT.")
-            mBluetoothAdapter.disable()
+            bluetoothAdapter?.disable()
             val BTIntent = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
             registerReceiver(mBluetootEnableBroadcastReceiver, BTIntent)
         }
